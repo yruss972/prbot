@@ -1,0 +1,73 @@
+repos:
+  # 1. Pre-commit Standard Hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  # 2. Codespell: Spelling Checker
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+      - id: codespell
+        args: ["--ignore-words-list", "crate,nd,bu,te,newyorker,autor,tread", "--skip", "*.map,*.min.js,pnpm-lock.yaml,package-lock.json"]
+
+  # 3. Hadolint: Enforces Best Practices & Shell Safety
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.14.0
+    hooks:
+      - id: hadolint
+        name: Hadolint (Dockerfile Linter)
+        description: Runs hadolint to lint Dockerfiles
+        language: system
+        entry: hadolint
+        types: [dockerfile]
+
+  # 4. Local System Hooks (Trivy, ShellCheck, Ruff, Trufflehog)
+  - repo: local
+    hooks:
+      - id: trivy
+        name: Trivy Security Scan
+        entry: trivy
+        language: system
+        args: ["fs", "--scanners", "vuln,misconfig", "--exit-code", "1", "--severity", "HIGH,CRITICAL", "--no-progress", "."]
+        pass_filenames: false
+        files: >-
+          (?x)^(
+            .*/?(
+              Gemfile.lock|Pipfile.lock|poetry.lock|requirements.txt|uv.lock|
+              package-lock.json|yarn.lock|pnpm-lock.yaml|pyproject.toml|
+              go.sum|go.mod|pom.xml|build.gradle|gradle.lockfile|
+              Dockerfile|Containerfile|
+              .*\.tf|.*\.yaml|.*\.yml|.*\.json
+            )
+          )$
+
+      - id: shellcheck
+        name: ShellCheck
+        entry: shellcheck
+        language: system
+        files: \.sh$
+        args: ["--severity=warning", "--external-sources"]
+
+      - id: bash-strict-mode
+        name: Enforce Bash Strict Mode
+        entry: bash -c 'if ! grep -q "set -euo pipefail" "$@"; then echo "Missing strict mode in $@"; exit 1; fi' --
+        language: system
+        files: \.sh$
+
+      - id: ruff
+        name: Ruff (Lint & Format)
+        entry: uv run ruff
+        language: system
+        files: \.py$
+        args: ["check", "--fix", "--exit-non-zero-on-fix"]
+
+      - id: trufflehog
+        name: TruffleHog
+        description: Detect secrets in your data.
+        entry: bash -c 'trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail --no-update'
+        language: system
