@@ -19,3 +19,11 @@ Thumbs.db
 # Antigravity/Agent Artifacts
 *.local.md
 plan.md.bak
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
