@@ -15,7 +15,7 @@ provider "github" {
 resource "github_repository" "prbot" {
   name        = var.repository_name
   description = "Automated PR review bot using Cloudflare Pages and PR-Agent."
-  visibility  = "public"
+  visibility  = "private"
 
   has_issues   = true
   has_projects = false # OSSF Recommendation: Reduce attack surface

@@ -5,14 +5,14 @@ Proposed (Supersedes custom JS/Hono Webhook approach)
 
 ## Context
 The user wants to leverage existing open-source tools (like Codium's `pr-agent`) instead of writing custom API integration code in JavaScript/Hono, pointing it at Cloudflare AI Gateway.
-* **Technical Constraints:** Cloudflare Pages' build environment must execute the code. Cloudflare Pages does *not* natively expose the PR Number or PR URL as an environment variable to the build runner. 
+* **Technical Constraints:** Cloudflare Pages' build environment must execute the code. Cloudflare Pages does *not* natively expose the PR Number or PR URL as an environment variable to the build runner.
 * **Business Drivers:** Maximize use of existing, battle-tested code review tools. Minimize custom boilerplate.
 
 ## Decision
 We will use **Cloudflare Pages as the build/execution runner** to execute the **`pr-agent` CLI** tool (Python). We will write a small Python wrapper script that fetches the correct Pull Request URL using the GitHub API (based on the `CF_PAGES_BRANCH` environment variable) and then executes `pr-agent`.
 
 ## Rationale
-* **Technical Alignment:** Cloudflare Pages defaults to Python 3.13 in its v3 build environment, fully supporting `pr-agent` (which requires >= Python 3.12). 
+* **Technical Alignment:** Cloudflare Pages defaults to Python 3.13 in its v3 build environment, fully supporting `pr-agent` (which requires >= Python 3.12).
 * **Efficiency:** `pr-agent` is an industry-standard, well-maintained tool that handles the complex logic of parsing diffs, chunking, and formatting Markdown comments perfectly. Writing this from scratch in JS is "reinventing the wheel."
 * **Sustainability:** By using `pr-agent`, we inherit all its future improvements (custom labels, chat commands, improved prompts) for free.
 
