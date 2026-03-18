@@ -1,0 +1,30 @@
+# Secrets and Credentials
+.env
+.env.*
+*.pem
+*.key
+secrets.json
+
+# Environment/Container Specifics
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+
+.devcontainer/local-overrides.json
+
+# OS Junk
+.DS_Store
+Thumbs.db
+
+# Antigravity/Agent Artifacts
+*.local.md
+plan.md.bak
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
