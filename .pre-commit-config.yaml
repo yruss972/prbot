@@ -7,6 +7,7 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
+        exclude: ^uv\.lock$
 
   # 2. Codespell: Spelling Checker
   - repo: https://github.com/codespell-project/codespell

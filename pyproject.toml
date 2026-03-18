@@ -1,0 +1,30 @@
+[project]
+name = "prbot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pr-agent @ git+https://github.com/qodo-ai/pr-agent.git",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1",
+    "pre-commit>=4.5.1",
+    "ruff>=0.15.4",
+]
+
+[tool.uv]
+override-dependencies = [
+    "aiohttp>=3.10.11",
+    "azure-identity>=1.16.1",
+    "google-cloud-aiplatform>=1.133.0",
+    "jinja2>=3.1.5",
+    "protobuf>=5.29.6",
+    "pyasn1>=0.6.3",
+    "PyJWT>=2.12.0",
+    "starlette>=0.40.0",
+    "ujson>=5.12.0",
+    "urllib3>=2.2.2"
+]
