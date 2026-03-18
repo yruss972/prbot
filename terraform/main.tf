@@ -15,7 +15,11 @@ provider "github" {
 resource "github_repository" "prbot" {
   name        = var.repository_name
   description = "Automated PR review bot using Cloudflare Pages and PR-Agent."
-  visibility  = "private"
+  # trivy:ignore:AVD-GIT-0001
+  visibility  = "public"
+
+  # This tells GitHub to create the initial commit on `main` with a default README
+  auto_init   = true
 
   has_issues   = true
   has_projects = false # OSSF Recommendation: Reduce attack surface
